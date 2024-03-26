@@ -338,6 +338,7 @@ body {
           & .overlay-list {
             padding-top: 12px;
             display: flex;
+            height: 0 !important;
             flex-direction: column;
             transition: globals.$transition-faster;
           }
