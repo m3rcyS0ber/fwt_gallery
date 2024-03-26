@@ -4,90 +4,110 @@ const vScrollable = {
       const currentElem = el as HTMLElement;
 
       currentElem.addEventListener("animationend", () => {
-        const trackElem = document.querySelector(".scrollbar-track");
+        const trackElem = document.querySelector(
+          ".scrollbar-track",
+        ) as HTMLElement;
 
-        const thumbElem = document.querySelector(".scrollbar-thumb");
+        const thumbElem = document.querySelector(
+          ".scrollbar-thumb",
+        ) as HTMLElement;
 
-        const scrollbarElem = document.querySelector(".scrollbar");
+        const scrollbarElem = document.querySelector(
+          ".scrollbar",
+        ) as HTMLElement;
 
-        const content = currentElem.querySelector(".scrollbar-body");
+        const content = currentElem.querySelector(
+          ".scrollbar-body",
+        ) as HTMLElement;
 
-        if (content.childElementCount <= 5) {
-          currentElem.style.height = `${36 * content.childElementCount}px`;
-          scrollbarElem.classList.add("hidden");
-        } else {
-          currentElem.style.height = "190px";
-          scrollbarElem.classList.remove("hidden");
-        }
-
-        const scrollRatio = content.clientHeight / content.scrollHeight;
-
-        let pos = { top: 0, y: 0 };
-
-        thumbElem.style.height = `${scrollRatio * 100}%`;
-
-        const config = { childList: true };
-
-        const callback = () => {
+        if (trackElem && thumbElem && scrollbarElem && content) {
           if (content.childElementCount <= 5) {
-            currentElem.style.height = "fit-content";
-            scrollbarElem.classList.add("hidden");
+            currentElem.style.height = `${36 * content.childElementCount}px`;
+            scrollbarElem?.classList.add("hidden");
           } else {
             currentElem.style.height = "190px";
-            scrollbarElem.classList.remove("hidden");
+            scrollbarElem?.classList.remove("hidden");
           }
-        };
 
-        const observer = new MutationObserver(callback);
-        observer.observe(content, config);
+          const scrollRatio = content
+            ? content.clientHeight / content.scrollHeight
+            : 0;
 
-        const mouseMoveHandler = (e) => {
-          const dy = e.clientY - pos.y;
-          content.scrollTop = pos.top + dy / scrollRatio;
-        };
+          let pos = { top: 0, y: 0 };
 
-        const mouseUpHandler = () => {
-          thumbElem.classList.remove("scrollbar-grabbing");
-          document.body.classList.remove("scrollbar-grabbing");
+          if (thumbElem) {
+            (thumbElem as HTMLElement).style.height = `${scrollRatio * 100}%`;
+          }
 
-          document.removeEventListener("mousemove", mouseMoveHandler);
-          document.removeEventListener("mouseup", mouseUpHandler);
-        };
+          const config = { childList: true };
 
-        const mouseDownThumbHandler = (e: any) => {
-          pos = {
-            top: content.scrollTop,
-            y: e.clientY,
+          const callback = () => {
+            if (
+              content &&
+              content.childElementCount &&
+              content.childElementCount <= 5
+            ) {
+              currentElem.style.height = "fit-content";
+              scrollbarElem?.classList.add("hidden");
+            } else {
+              currentElem.style.height = "190px";
+              scrollbarElem?.classList.remove("hidden");
+            }
           };
 
-          thumbElem.classList.add("scrollbar-grabbing");
-          document.body.classList.add("scrollbar-grabbing");
+          const observer = new MutationObserver(callback);
+          observer.observe(content, config);
 
-          document.addEventListener("mousemove", mouseMoveHandler);
-          document.addEventListener("mouseup", mouseUpHandler);
-        };
+          const mouseMoveHandler = (e: any) => {
+            const dy = e.clientY - pos.y;
+            content.scrollTop = pos.top + dy / scrollRatio;
+          };
 
-        const scrollContentHandler = () => {
-          window.requestAnimationFrame(() => {
-            thumbElem.style.top = `${(content.scrollTop * 100) / content.scrollHeight}%`;
+          const mouseUpHandler = () => {
+            thumbElem.classList.remove("scrollbar-grabbing");
+            document.body.classList.remove("scrollbar-grabbing");
+
+            document.removeEventListener("mousemove", mouseMoveHandler);
+            document.removeEventListener("mouseup", mouseUpHandler);
+          };
+
+          const mouseDownThumbHandler = (e: any) => {
+            pos = {
+              top: content.scrollTop,
+              y: e.clientY,
+            };
+
+            thumbElem.classList.add("scrollbar-grabbing");
+            document.body.classList.add("scrollbar-grabbing");
+
+            document.addEventListener("mousemove", mouseMoveHandler);
+            document.addEventListener("mouseup", mouseUpHandler);
+          };
+
+          const scrollContentHandler = () => {
+            window.requestAnimationFrame(() => {
+              thumbElem.style.top = `${(content.scrollTop * 100) / content.scrollHeight}%`;
+            });
+          };
+
+          const trackClickHandler = (e: any) => {
+            const bound = trackElem.getBoundingClientRect();
+            const percentage = (e.clientY - bound.top) / bound.height;
+            content.scrollTop =
+              percentage * (content.scrollHeight - content.clientHeight);
+          };
+          const mouseWheelHandler = (e: any) => {
+            const delta = e.deltaY;
+            content.scrollTop += delta / 3;
+          };
+
+          content.addEventListener("scroll", scrollContentHandler);
+          content.addEventListener("wheel", mouseWheelHandler, {
+            passive: true,
           });
-        };
-
-        const trackClickHandler = (e: any) => {
-          const bound = trackElem.getBoundingClientRect();
-          const percentage = (e.clientY - bound.top) / bound.height;
-          content.scrollTop =
-            percentage * (content.scrollHeight - content.clientHeight);
-        };
-        const mouseWheelHandler = (e: any) => {
-          const delta = e.deltaY;
-          content.scrollTop += delta / 3;
-        };
-
-        content.addEventListener("scroll", scrollContentHandler);
-        content.addEventListener("wheel", mouseWheelHandler, { passive: true });
-        thumbElem.addEventListener("mousedown", mouseDownThumbHandler);
-        trackElem.addEventListener("click", trackClickHandler);
+          thumbElem.addEventListener("mousedown", mouseDownThumbHandler);
+          trackElem.addEventListener("click", trackClickHandler);
+        }
       });
     }
   },

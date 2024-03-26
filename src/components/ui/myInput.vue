@@ -126,7 +126,7 @@ function focusInInput() {
   if (props.type === "select") {
     setExpandState(true);
     document.addEventListener("mousedown", (e: any) => {
-      if (!inputDiv.contains(e.target)) {
+      if (!inputDiv?.contains(e.target)) {
         setExpandState(false);
       }
     });
