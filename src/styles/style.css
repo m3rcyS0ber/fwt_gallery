@@ -1,0 +1,187 @@
+/*============================
+            COLORS
+=============================*/
+/*============================
+            SPACER
+=============================*/
+/*============================
+            GRID
+=============================*/
+/*============================
+          TRANSITION
+=============================*/
+body {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+img {
+  border-style: none;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+/*============================
+            COLORS
+=============================*/
+/*============================
+            SPACER
+=============================*/
+/*============================
+            GRID
+=============================*/
+/*============================
+          TRANSITION
+=============================*/
+body {
+  overflow: auto;
+}
+body {
+  background-color: #121212;
+  color: #DEDEDE;
+  transition: all 0.5s;
+}
+body ::selection {
+  background: rgba(171, 137, 86, 0.5);
+}
+body p, body label, body input, body select {
+  color: #FFFFFF;
+  transition: all 0.3s;
+}
+body[data-theme=light] {
+  background-color: #FFFFFF;
+  color: #575757;
+  transition: all 0.5s;
+}
+body[data-theme=light] ::selection {
+  background: rgba(155, 75, 75, 0.5);
+}
+body[data-theme=light] p, body[data-theme=light] label, body[data-theme=light] input, body[data-theme=light] select {
+  color: #121212;
+  transition: all 0.3s;
+}
+body.not-scrollable {
+  overflow: hidden;
+}
+body .wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  padding: 0 100px;
+  transition: all 0.5s;
+}
+body .wrapper .content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (max-width: 1023px) {
+  body .wrapper {
+    gap: 24px;
+    padding: 0 20px;
+    transition: all 0.5s;
+  }
+}
+
+@font-face {
+  src: url("../assets/fonts/cormorant/CormorantSC-Medium.ttf");
+  font-family: "Cormorant SC Medium";
+}
+@font-face {
+  src: url("../assets/fonts/urbanist/Urbanist-VariableFont_wght.ttf");
+  font-family: "Urbanist";
+}
+@font-face {
+  src: url("../assets/fonts/Inter-VariableFont_slnt,wght.ttf");
+  font-family: "Inter";
+}
+/*============================
+            COLORS
+=============================*/
+/*============================
+            SPACER
+=============================*/
+/*============================
+            GRID
+=============================*/
+/*============================
+          TRANSITION
+=============================*/
+.scrollbar-anchor {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.scrollbar-grabbing {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.scrollbar {
+  display: block;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 4px;
+  margin-right: 4px;
+  height: 95%;
+  margin-bottom: 10px;
+}
+.scrollbar.hidden {
+  display: none;
+}
+
+.scrollbar-thumb {
+  border-radius: 4px;
+  z-index: 99;
+  cursor: grab;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.scrollbar-track {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #121212;
+  color: #DEDEDE;
+  transition: all 0.5s;
+}
+body .scrollbar-thumb {
+  background-color: #DEDEDE;
+}
+body[data-theme=light] {
+  background-color: #FFFFFF;
+  color: #575757;
+  transition: all 0.5s;
+}
+body[data-theme=light] .scrollbar-thumb {
+  background-color: #9C9C9C;
+}
+
+/*# sourceMappingURL=style.css.map */

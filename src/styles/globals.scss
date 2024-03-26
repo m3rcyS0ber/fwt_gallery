@@ -1,0 +1,47 @@
+/*============================
+            COLORS
+=============================*/
+
+$black-primary: #121212;
+$black-secondary: #1A1818;
+
+$dark-gray-primary: #575757;
+$light-gray-primary: #DEDEDE;
+$gray-secondary: #9C9C9C;
+$white-primary: #FFFFFF;
+$white-secondary: #FCFCFC;
+
+$accent-gold: #AB8956;
+$accent-red: #9B4B4B;
+
+$main-body: $black-primary;
+
+/*============================
+            SPACER
+=============================*/
+
+$spacer-size: 4px;
+
+@function getSpacing($multiplier) {
+  @return $spacer-size*$multiplier
+}
+/*============================
+            GRID
+=============================*/
+
+$grid: (
+  minw-1440: (
+      columns: 12
+
+  )
+);
+/*============================
+          TRANSITION
+=============================*/
+
+$animation-slower-time: 1.5s;
+$animation-default-time: .5s;
+$animation-faster-time: .3s;
+
+$default-transition: all $animation-default-time;
+$transition-faster: all $animation-faster-time;

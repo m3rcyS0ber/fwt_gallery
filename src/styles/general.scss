@@ -1,0 +1,54 @@
+@use "helpers/prepareTheme" as *;
+@use "theme" as c;
+@use "sass:string";
+@use "sass:list";
+@use "globals";
+
+body {
+  overflow: auto;
+  @include getThemeInBody using ($theme) {
+    ::selection {
+      background: transparentize(map-get($theme, accent), 0.5);
+    }
+    
+    p, label, input, select {
+      color: map-get(getNextTheme(map-get($theme, name)), primary);
+      transition: globals.$transition-faster;
+    }
+  }
+  &.not-scrollable {
+    overflow: hidden;
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    padding: 0 globals.getSpacing(25);
+    transition: globals.$default-transition;
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (max-width: 1023px) {
+      & {
+        gap: 24px;
+        padding: 0 globals.getSpacing(5);
+        transition: globals.$default-transition;
+      }
+    }
+  }
+}
+
+@font-face {
+  src: url("../assets/fonts/cormorant/CormorantSC-Medium.ttf");
+  font-family: "Cormorant SC Medium";
+}
+@font-face {
+  src: url("../assets/fonts/urbanist/Urbanist-VariableFont_wght.ttf");
+  font-family: "Urbanist";
+}
+@font-face {
+  src: url("../assets/fonts/Inter-VariableFont_slnt,wght.ttf");
+  font-family: "Inter";
+}

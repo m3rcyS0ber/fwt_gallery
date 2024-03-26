@@ -1,0 +1,94 @@
+@use "globals";
+@use "sass:list";
+
+
+$dark-theme: (
+        name: dark,
+        primary: globals.$black-primary,
+        primary-inverse: globals.$white-primary,
+        secondary: globals.$black-secondary,
+
+        text-primary: globals.$light-gray-primary,
+        text-secondary: globals.$dark-gray-primary,
+        text-tertiary: globals.$gray-secondary,
+
+        accent: globals.$accent-gold,
+
+        searchbar-bg: globals.$black-secondary,
+        searchbar-border: globals.$black-secondary,
+        searchbar-border-focus: globals.$light-gray-primary,
+
+        sidepanel-bg: globals.$black-primary,
+
+        icon-fill: globals.$light-gray-primary,
+        icon-bg: globals.$black-secondary,
+        icon-bg-hover: transparentize(#CDCDCD,0.95),
+
+        filter-icon-hover: globals.$white-primary,
+
+        switcher-icon-fill: globals.$light-gray-primary,
+
+        pagination-active-bg: globals.$black-secondary,
+        pagination-hover: globals.$dark-gray-primary,
+
+        expand-icon: globals.$dark-gray-primary,
+
+        button-text: globals.$light-gray-primary,
+        button-text-hover: globals.$white-primary,
+        button-text-disabled: globals.$dark-gray-primary,
+
+        scrollbar-thumb: globals.$light-gray-primary,
+
+        gallery-arrow-fill: globals.$light-gray-primary
+);
+$light-theme: (
+        name: light,
+        primary: globals.$white-primary,
+        primary-inverse: globals.$black-primary,
+        secondary: globals.$white-secondary,
+
+        text-primary: globals.$dark-gray-primary,
+        text-secondary: globals.$dark-gray-primary,
+        text-tertiary: globals.$gray-secondary,
+
+        accent: globals.$accent-red,
+
+        searchbar-bg: globals.$white-primary,
+        searchbar-border: globals.$light-gray-primary,
+        searchbar-border-focus: globals.$dark-gray-primary,
+
+        sidepanel-bg: globals.$white-primary,
+
+        icon-fill: globals.$dark-gray-primary,
+        icon-bg: globals.$white-primary,
+        icon-bg-hover: transparentize(globals.$black-primary,0.95),
+
+        filter-icon-hover: globals.$black-primary,
+
+        switcher-icon-fill: globals.$black-primary,
+
+        pagination-active-bg: transparentize(globals.$black-primary,0.95),
+        pagination-hover: globals.$gray-secondary,
+
+        expand-icon: globals.$gray-secondary,
+
+        button-text: globals.$dark-gray-primary,
+        button-text-hover: globals.$black-primary,
+        button-text-disabled: globals.$gray-secondary,
+
+        scrollbar-thumb: globals.$gray-secondary,
+
+        gallery-arrow-fill: globals.$light-gray-primary
+);
+$themes: (
+    dark: $dark-theme,
+    light: $light-theme,
+);
+
+@function getAvailableThemes() {
+    $list: ();
+    @each $key, $val in $themes {
+        $list: list.append($list, $key);
+    }
+    @return $list;
+}

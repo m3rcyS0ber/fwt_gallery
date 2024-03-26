@@ -1,0 +1,124 @@
+@use "../../styles/globals";
+@mixin animate($name, $infinite: false, $slower: false) {
+  $iterations: 1;
+  $duration: globals.$animation-default-time;
+  @if $infinite == true {
+    $iterations: infinite;
+  }
+  @if $slower == true {
+    $duration: globals.$animation-slower-time;
+  }
+  & {
+    animation-name: $name;
+    animation-duration: $duration;
+    animation-iteration-count: $iterations;
+  }
+}
+@keyframes hideSlideToDown {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+@keyframes showSlideFromDown {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes hideSlideToLeft {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-40%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes showSlideFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  40% {
+    transform: translateX(-40%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes zoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.075);
+  }
+}
+@keyframes zoomOut {
+  from {
+    transform: scale(1.075);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes loading {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}
+@keyframes expanding {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  20% {
+    opacity: 0.8;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+    height: 190px;
+  }
+}
+@keyframes collapsing {
+  0% {
+    opacity: 1;
+    height: 190px;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    height: 0;
+  }
+}

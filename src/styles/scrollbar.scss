@@ -1,0 +1,46 @@
+@use "./helpers/prepareTheme" as *;
+.scrollbar-anchor {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+.scrollbar-grabbing {
+  cursor: grabbing;
+  user-select: none;
+}
+.scrollbar {
+  display: block;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 4px;
+  margin-right: 4px;
+  height: 95%;
+  margin-bottom: 10px;
+  &.hidden {
+    display: none;
+  }
+}
+.scrollbar-thumb {
+  border-radius: 4px;
+  z-index: 99;
+  cursor: grab;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+.scrollbar-track {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+body {
+  @include getThemeInBody using ($theme) {
+    .scrollbar-thumb {
+      background-color: map-get($theme, scrollbar-thumb);
+    }
+  }
+}

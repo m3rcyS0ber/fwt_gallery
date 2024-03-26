@@ -1,0 +1,13 @@
+@use '../../styles/theme' as *;
+@use 'sass:map';
+
+@function getThemeColor($theme-name: dark, $color-name) {
+  @if index($themes, $theme-name) != false {
+    @each $val in $themes {
+      @return map.get($themes, $theme-name, $color-name)
+    }
+  }
+  @else {
+    @return map.get($themes, dark, $color-name)
+  }
+}

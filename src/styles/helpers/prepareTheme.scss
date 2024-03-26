@@ -1,0 +1,67 @@
+@use 'getThemeColor' as *;
+@use '../../styles/theme' as *;
+@use '../../styles/globals';
+@use 'sass:list';
+@use 'sass:string';
+@use 'sass:math';
+
+
+$default-theme: dark !default;
+
+@mixin getThemeInBody {
+  & {
+    background-color: getThemeColor($default-theme, primary);
+    color: getThemeColor($default-theme, text-primary);
+    transition: globals.$default-transition;
+    @content(map-get($themes, $default-theme));
+  }
+  @each $tname, $theme in $themes {
+    @if $tname != $default-theme {
+      &[data-theme=#{$tname}] {
+        background-color: getThemeColor($tname, primary);
+        color: getThemeColor($tname, text-primary);
+        transition: globals.$default-transition;
+        @content($theme);
+      }
+    }
+  }
+}
+//@mixin getTheme {
+//  & {
+//    @content(map-get($themes, $default-theme))
+//  }
+//  @each $tname, $theme in $themes {
+//    @if $tname != $default-theme {
+//      &[data-theme=#{$tname}] {
+//        @content($theme)
+//      }
+//    }
+//  }
+//}
+@function getNextTheme($theme, $onlyName: false) {
+  $available-themes: getAvailableThemes();
+  $theme-index: list.index($available-themes,$theme);
+  $next-index: $theme-index + 1;
+  $length: list.length($available-themes);
+  @if ($length >= $next-index) {
+    $theme: list.nth($available-themes, $next-index);
+  }
+  @else {
+    $theme: list.nth($available-themes, 1);
+  }
+  @if ($onlyName == true) {
+    @return $theme;
+  }
+  @else {
+    @return map-get($themes, $theme)
+  }
+}
+@function getThemeIconPath($theme) {
+  @return string.insert("@/assets/icons/theme_",string.insert(getNextTheme($theme, true),"_icon.svg",-1),-1)
+}
+@function getIconByName($name, $iconSuffix: true, $extension: svg) {
+  @if $iconSuffix == true {
+    $name: string.insert($name, "_icon", -1)
+  }
+  @return string.insert("@/assets/icons/",string.insert($name,string.insert(".",$extension, -1),-1),-1);
+}

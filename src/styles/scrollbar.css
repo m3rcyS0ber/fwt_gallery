@@ -1,0 +1,15 @@
+.scrollbar-track {
+  left: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.scrollbar-thumb {
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+/*# sourceMappingURL=scrollbar.css.map */
