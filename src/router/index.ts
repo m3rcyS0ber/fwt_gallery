@@ -4,8 +4,12 @@ import NotFound from "@/components/views/notFound.vue";
 import { AppRouteRecord } from "@/types/routerUtils";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
-  { path: "/:pathMatch(.*)", name: "NotFound", component: NotFound },
+  { path: "/fwt_gallery", name: "Home", component: Home },
+  {
+    path: "/:pathMatch(.*)",
+    name: "NotFound",
+    component: NotFound,
+  },
 ] as const satisfies readonly AppRouteRecord[];
 const router = createRouter({
   routes: routes as unknown as RouteRecordRaw[],
