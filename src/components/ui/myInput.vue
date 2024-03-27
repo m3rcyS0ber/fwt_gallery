@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThemeableIcon from "@/components/ui/themeableIcon.vue";
-import { onBeforeUnmount, onMounted, onUnmounted, PropType, ref } from "vue";
+import { onUnmounted, PropType, ref } from "vue";
 import { useModelStore } from "@/stores/ModelStore";
 
 const props = defineProps({

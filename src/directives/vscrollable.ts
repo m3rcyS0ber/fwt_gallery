@@ -91,13 +91,50 @@ const vscrollable = {
             bodyElem.scrollTop = pos.top;
           };
 
+          let touched: boolean = false;
+          const touchPos = {
+            x: 0,
+            y: 0,
+          };
+          const onTouchStart = (e: any) => {
+            if (!touched) {
+              touched = true;
+              const touchEvt = e.changedTouches[0];
+              touchPos.x = parseInt(touchEvt.clientX, 10);
+              touchPos.y = parseInt(touchEvt.clientY, 10);
+            }
+            return false;
+          };
+          const onTouchMove = (e: any) => {
+            if (touched) {
+              const touchEvt = e.changedTouches[0];
+              const distanceX = touchPos.x - parseInt(touchEvt.clientX, 10);
+              const distanceY = touchPos.y - parseInt(touchEvt.clientY, 10);
+              if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                touchPos.y = parseInt(touchEvt.clientY, 10);
+                pos.top += distanceY;
+                bodyElem.scrollTop = pos.top;
+                return false;
+              }
+            }
+            return false;
+          };
+          const onTouchEnd = () => {
+            touched = false;
+            return true;
+          };
+
           bodyElem.addEventListener("scroll", scrollContentHandler);
           bodyElem.addEventListener("wheel", mouseWheelHandler, {
             passive: true,
           });
-          bodyElem.addEventListener("touchstart", (e) => {
-            console.log("drag");
+          bodyElem.addEventListener("touchstart", onTouchStart, {
+            passive: true,
           });
+          bodyElem.addEventListener("touchmove", onTouchMove, {
+            passive: true,
+          });
+          bodyElem.addEventListener("touchend", onTouchEnd);
           thumbElem.addEventListener("mousedown", mouseDownThumbHandler);
           trackElem.addEventListener("click", trackClickHandler);
         }
