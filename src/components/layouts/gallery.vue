@@ -27,19 +27,21 @@ const mainStore = useMainStore();
     </div>
     <div v-else class="gallery-empty">
       <p
-        v-if="Object.values(mainStore.getFilterOptions).length"
-        class="gallery-empty-title"
-      >
-        No matches with filters
-      </p>
-      <p
-        v-else-if="modelStore.getSearchValue.length"
+        v-if="Object.keys(mainStore.getFilterOptions).toString() === 'query'"
+        v-once
         class="gallery-empty-title"
       >
         No matches for
         <span class="gallery-empty-title-search">{{
-          modelStore.getSearchValue
+          mainStore.getFilterOptions.query
         }}</span>
+      </p>
+      <p
+        v-else-if="Object.values(mainStore.getFilterOptions).length"
+        v-once
+        class="gallery-empty-title"
+      >
+        No matches with filters
       </p>
       <p v-else class="gallery-empty-title">No matches</p>
       <p class="gallery-empty-comment">
