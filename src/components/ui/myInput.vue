@@ -167,7 +167,6 @@ function focusOutInput() {
       inputDiv.classList.remove("anyInput-focus");
     }
   }
-  // if (props.type === "select") setExpandState(false);
 }
 function setModelValue(val: any) {
   const input = document.querySelector(
@@ -205,7 +204,11 @@ const onTextInput = (e: Event) => {
     }
   }
   if (props.inputCb?.length) {
-    props.inputCb(modelStore.getModelValue(props.modelName));
+    if (props.type !== "search") {
+      props.inputCb(modelStore.getModelValue(props.modelName));
+    } else {
+      props.inputCb(modelStore.getSearchValue);
+    }
   } else {
     props.inputCb();
   }
@@ -216,6 +219,9 @@ const onSearchIconClick = () => {
   ) as HTMLInputElement;
   if (searchInput) {
     modelStore.setSearchValue(searchInput.value);
+    if (props.inputCb?.length) {
+      props.inputCb(modelStore.getSearchValue);
+    } else props.inputCb();
   }
 };
 const onOptionSelected = (option: any) => {

@@ -8,12 +8,17 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  inputCb: {
+    type: Function,
+    required: false,
+    default: () => {},
+  },
 });
 </script>
 
 <template>
   <div class="toolbar">
-    <MyInput type="search" placeholder="Painting title" />
+    <MyInput type="search" :input-cb="inputCb" placeholder="Painting title" />
     <ThemeableIcon
       name="filter"
       :with-bg="true"

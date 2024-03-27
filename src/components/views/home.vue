@@ -11,21 +11,18 @@ const mainStore = useMainStore();
 
 mainStore.refreshAll();
 
-const modelStore = useModelStore();
-
-modelStore.$subscribe((mutation: any, state: any) => {
-  if (mutation && mutation.event && mutation.events.key === "search") {
-    const tempOptions = mainStore.filterOptions;
-    tempOptions.query = state.search;
-    mainStore.setFilterOptions(tempOptions);
-    mainStore.setPage(1);
-  }
-});
+const onSearchInput = (searchVal: string) => {
+  const tempOptions = mainStore.filterOptions;
+  tempOptions.query = searchVal;
+  mainStore.setFilterOptions(tempOptions);
+  mainStore.setPage(1);
+};
 </script>
 
 <template>
   <Toolbar
     search-name="search"
+    :input-cb="onSearchInput"
     :filter-cb="useModelStore().togglePanelOpen"
   ></Toolbar>
   <div class="gallery-container">
