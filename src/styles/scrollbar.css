@@ -1,15 +1,67 @@
-.scrollbar-track {
-  left: 0;
+/*============================
+            COLORS
+=============================*/
+/*============================
+            SPACER
+=============================*/
+/*============================
+            GRID
+=============================*/
+/*============================
+          TRANSITION
+=============================*/
+.scrollbar-grabbing {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.scrollbar {
+  display: block;
+  background-color: transparent;
   position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100%;
+  bottom: 0;
+  right: 0;
+  width: 4px;
+  margin-right: 4px;
+  height: 95%;
+  margin-bottom: 10px;
+}
+.scrollbar.hidden {
+  display: none;
 }
 
 .scrollbar-thumb {
+  border-radius: 4px;
+  z-index: 99;
+  cursor: grab;
   left: 0;
   position: absolute;
   width: 100%;
+}
+
+.scrollbar-track {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #121212;
+  color: #DEDEDE;
+  transition: all 0.5s;
+}
+body .scrollbar-thumb {
+  background-color: #DEDEDE;
+}
+body[data-theme=light] {
+  background-color: #FFFFFF;
+  color: #575757;
+  transition: all 0.5s;
+}
+body[data-theme=light] .scrollbar-thumb {
+  background-color: #9C9C9C;
 }
 
 /*# sourceMappingURL=scrollbar.css.map */

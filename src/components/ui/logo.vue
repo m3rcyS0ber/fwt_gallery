@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <a href="/" aria-label="logo" class="logo"></a>
+  <a href="/fwt_gallery" aria-label="logo" class="logo"></a>
 </template>
 
 <style scoped lang="scss">

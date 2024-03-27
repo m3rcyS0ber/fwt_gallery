@@ -28,21 +28,36 @@ modelStore.$subscribe((mutation: any, state: any) => {
     search-name="search"
     :filter-cb="useModelStore().togglePanelOpen"
   ></Toolbar>
-  <Gallery
-    v-if="!mainStore.getLoadingState"
-    :paintings="mainStore.getPaintings"
-  ></Gallery>
-  <Pagination
-    v-if="!mainStore.getLoadingState && mainStore.getPaintings.length"
-    :pages="mainStore.getPagesCount"
-    :active-page="mainStore.getCurrentPage"
-    :next-cb="async () => await mainStore.setNextPage()"
-    :prev-cb="async () => await mainStore.setPrevPage()"
-    :page-cb="async (num: number) => await mainStore.setPage(num)"
-  />
+  <div class="gallery-container">
+    <Gallery
+      v-if="!mainStore.getLoadingState"
+      :paintings="mainStore.getPaintings"
+    ></Gallery>
+    <Pagination
+      v-if="!mainStore.getLoadingState && mainStore.getPaintings.length"
+      :pages="mainStore.getPagesCount"
+      :active-page="mainStore.getCurrentPage"
+      :next-cb="async () => await mainStore.setNextPage()"
+      :prev-cb="async () => await mainStore.setPrevPage()"
+      :page-cb="async (num: number) => await mainStore.setPage(num)"
+    />
+  </div>
 
   <Loading v-if="mainStore.getLoadingState" />
   <FilterPanel :is-loading="mainStore.getLoadingState" />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  @media (max-width: 767px) {
+    & {
+      gap: 32px;
+    }
+  }
+}
+</style>

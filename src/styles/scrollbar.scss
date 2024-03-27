@@ -1,9 +1,4 @@
 @use "./helpers/prepareTheme" as *;
-.scrollbar-anchor {
-  left: 0;
-  position: absolute;
-  top: 0;
-}
 .scrollbar-grabbing {
   cursor: grabbing;
   user-select: none;

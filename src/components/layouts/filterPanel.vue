@@ -8,6 +8,7 @@ import MyInput from "@/components/ui/myInput.vue";
 import { useMainStore } from "@/stores/MainStore";
 import { YearRange } from "@/types/apiTypes";
 import { toRefs } from "vue";
+import { useModelStore } from "@/stores/ModelStore";
 
 const props = defineProps({
   isLoading: {
@@ -57,6 +58,11 @@ const onRangeInput = (year: number[]) => {
             :select-options="mainStore.getLocations"
             :select-cb="onSelect"
             :unselect-cb="() => delete filterOptions.locationId"
+            :unmount-cb="
+              () =>
+                filterOptions.locationId ||
+                useModelStore().setModelValue('location', '')
+            "
             model-name="location"
           />
         </Accordion>

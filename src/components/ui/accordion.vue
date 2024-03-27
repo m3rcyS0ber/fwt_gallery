@@ -48,8 +48,13 @@ const toggleAccordion = () => {
         />
       </div>
     </div>
-    <div v-if="modelStore.getModelValue(props.name)" class="accordion-body">
-      <slot></slot>
+    <div class="accordion-body">
+      <div
+        v-show="modelStore.getModelValue(props.name)"
+        class="accordion-body-wrapper"
+      >
+        <slot />
+      </div>
     </div>
   </div>
 </template>

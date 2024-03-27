@@ -84,7 +84,7 @@ body .wrapper {
   display: flex;
   flex-direction: column;
   gap: 44px;
-  padding: 0 100px;
+  padding: 0 100px 100px 100px;
   transition: all 0.5s;
 }
 body .wrapper .content {
@@ -95,7 +95,13 @@ body .wrapper .content {
 @media (max-width: 1023px) {
   body .wrapper {
     gap: 24px;
-    padding: 0 20px;
+    padding: 0 20px 100px 20px;
+    transition: all 0.5s;
+  }
+}
+@media (max-width: 767px) {
+  body .wrapper {
+    padding: 0 20px 80px 20px;
     transition: all 0.5s;
   }
 }
@@ -124,12 +130,6 @@ body .wrapper .content {
 /*============================
           TRANSITION
 =============================*/
-.scrollbar-anchor {
-  left: 0;
-  position: absolute;
-  top: 0;
-}
-
 .scrollbar-grabbing {
   cursor: grabbing;
   user-select: none;

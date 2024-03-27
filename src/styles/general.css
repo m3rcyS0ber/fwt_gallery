@@ -1,19 +1,82 @@
-/* Error: Can't find stylesheet to import.
- *   ,
- * 1 | @use '@/styles/theme' as *;
- *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^
- *   '
- *   helpers\getThemeColor.scss 1:1  @use
- *   helpers\prepareTheme.scss 1:1   @use
- *   general.scss 1:1                root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @use '@/styles/theme' as *;\d\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   helpers\\getThemeColor.scss 1:1  @use\a   helpers\\prepareTheme.scss 1:1   @use\a   general.scss 1:1                root stylesheet";
+/*============================
+            COLORS
+=============================*/
+/*============================
+            SPACER
+=============================*/
+/*============================
+            GRID
+=============================*/
+/*============================
+          TRANSITION
+=============================*/
+body {
+  overflow: auto;
 }
+body {
+  background-color: #121212;
+  color: #DEDEDE;
+  transition: all 0.5s;
+}
+body ::selection {
+  background: rgba(171, 137, 86, 0.5);
+}
+body p, body label, body input, body select {
+  color: #FFFFFF;
+  transition: all 0.3s;
+}
+body[data-theme=light] {
+  background-color: #FFFFFF;
+  color: #575757;
+  transition: all 0.5s;
+}
+body[data-theme=light] ::selection {
+  background: rgba(155, 75, 75, 0.5);
+}
+body[data-theme=light] p, body[data-theme=light] label, body[data-theme=light] input, body[data-theme=light] select {
+  color: #121212;
+  transition: all 0.3s;
+}
+body.not-scrollable {
+  overflow: hidden;
+}
+body .wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  padding: 0 100px 100px 100px;
+  transition: all 0.5s;
+}
+body .wrapper .content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (max-width: 1023px) {
+  body .wrapper {
+    gap: 24px;
+    padding: 0 20px 100px 20px;
+    transition: all 0.5s;
+  }
+}
+@media (max-width: 767px) {
+  body .wrapper {
+    padding: 0 20px 80px 20px;
+    transition: all 0.5s;
+  }
+}
+
+@font-face {
+  src: url("../assets/fonts/cormorant/CormorantSC-Medium.ttf");
+  font-family: "Cormorant SC Medium";
+}
+@font-face {
+  src: url("../assets/fonts/urbanist/Urbanist-VariableFont_wght.ttf");
+  font-family: "Urbanist";
+}
+@font-face {
+  src: url("../assets/fonts/Inter-VariableFont_slnt,wght.ttf");
+  font-family: "Inter";
+}
+
+/*# sourceMappingURL=general.css.map */

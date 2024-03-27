@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThemeableIcon from "@/components/ui/themeableIcon.vue";
-import { PropType, ref } from "vue";
+import { onBeforeUnmount, onMounted, onUnmounted, PropType, ref } from "vue";
 import { useModelStore } from "@/stores/ModelStore";
 
 const props = defineProps({
@@ -56,6 +56,11 @@ const props = defineProps({
     required: false,
     default: () => {},
   },
+  unmountCb: {
+    type: Function,
+    required: false,
+    default: () => {},
+  },
 });
 
 const modelStore = useModelStore();
@@ -66,17 +71,33 @@ const filteredOptions = ref(props.selectOptions);
 if (props.type !== "search") {
   modelStore.prepareModelValue(
     props.modelName,
-    props.type === "text" ? "" : NaN,
+    props.type !== "number" ? "" : NaN,
   );
 }
 
-const doFilterOptions = () => {
+/*
+
+        FILTER OPTIONS IN SELECT
+
+ */
+
+const doFilterOptions = (query?: string) => {
   if (props.selectOptions?.length) {
-    return props.selectOptions?.filter((x: any) =>
-      (x.name || x.location)
-        .toLowerCase()
-        .includes(modelStore.getModelValue(props.modelName).toLowerCase()),
-    );
+    if (typeof query === "string") {
+      return props.selectOptions?.filter((x: any) =>
+        (x.name || x.location)
+          .toLowerCase()
+          .includes((query || "").trim().toLowerCase()),
+      );
+    }
+    const currentModelValue = modelStore.getModelValue(props.modelName);
+    if (typeof currentModelValue === "string") {
+      return props.selectOptions?.filter((x: any) =>
+        (x.name || x.location)
+          .toLowerCase()
+          .includes(currentModelValue.trim().toLowerCase()),
+      );
+    }
   }
   return [];
 };
@@ -90,29 +111,34 @@ function setExpandState(bool: boolean) {
   const selectDiv = document.querySelector(
     `.anyInput.anyInput-select.anyInput-${props.modelName} .overlay`,
   ) as HTMLDivElement;
-  if (bool) {
-    expandState.value = bool;
-    if (!selectDiv.classList.contains("expanded")) {
-      selectDiv.classList.add("expanded");
-    }
-    if (selectDiv.classList.contains("collapsed")) {
-      selectDiv.classList.remove("collapsed");
-    }
-  } else {
-    expandState.value = bool;
-    if (!selectDiv.classList.contains("collapsed")) {
-      selectDiv.classList.add("collapsed");
-    }
-    if (selectDiv.classList.contains("expanded")) {
-      selectDiv.classList.add("expanded");
+  expandState.value = bool;
+  if (selectDiv) {
+    if (bool) {
+      if (selectDiv.classList && !selectDiv.classList.contains("expanded")) {
+        selectDiv.classList.add("expanded");
+      }
+      if (selectDiv.classList && selectDiv.classList.contains("collapsed")) {
+        selectDiv.classList.remove("collapsed");
+      }
+    } else {
+      if (selectDiv.classList && !selectDiv.classList.contains("collapsed")) {
+        selectDiv.classList.add("collapsed");
+      }
+      if (selectDiv.classList && selectDiv.classList.contains("expanded")) {
+        selectDiv.classList.add("expanded");
+      }
     }
   }
 }
+const clickOutsideCallback = () => {
+  setExpandState(false);
+};
 /*
 
       FOCUS EVENTS
 
  */
+
 function focusInInput() {
   let inputDiv = document.querySelector(".anyInput.anyInput-search");
   if (props.type !== "search") {
@@ -122,14 +148,13 @@ function focusInInput() {
     if (!inputDiv.classList.contains("anyInput-focus")) {
       inputDiv.classList.add("anyInput-focus");
     }
-  }
-  if (props.type === "select") {
-    setExpandState(true);
-    document.addEventListener("mousedown", (e: any) => {
-      if (!inputDiv?.contains(e.target)) {
-        setExpandState(false);
-      }
-    });
+    if (props.type === "select") {
+      setExpandState(true);
+      const searchQuery: string = (inputDiv as HTMLInputElement)
+        ? (inputDiv as HTMLInputElement).value
+        : "";
+      filteredOptions.value = doFilterOptions(searchQuery);
+    }
   }
 }
 function focusOutInput() {
@@ -190,6 +215,25 @@ const onOptionSelected = (option: any) => {
   props.selectCb(option);
   setExpandState(false);
 };
+onUnmounted(() => {
+  props.unmountCb();
+});
+// onBeforeUnmount(()=>{
+//   const optionElems = document.querySelectorAll(".overlay-list-option");
+//   if (optionElems) {
+//     optionElems.forEach((elem: any) => {
+//       (elem as HTMLElement).removeEventListener("click", onOptionSelected);
+//     });
+//   }
+// })
+// onMounted(() => {
+//   const optionElems = document.querySelectorAll(".overlay-list-option");
+//   if (optionElems) {
+//     optionElems.forEach((elem: any) => {
+//       (elem as HTMLElement).addEventListener("click", onOptionSelected);
+//     });
+//   }
+// });
 </script>
 
 <template>
@@ -235,6 +279,7 @@ const onOptionSelected = (option: any) => {
   </div>
   <div
     v-if="props.type === 'select'"
+    v-click-outside="{ isActive: expandState, callback: clickOutsideCallback }"
     :class="`anyInput anyInput-select anyInput-${props.modelName}`"
   >
     <input
@@ -254,12 +299,10 @@ const onOptionSelected = (option: any) => {
       :click-cb="() => setExpandState(!expandState)"
     />
     <div v-scrollable="expandState" class="overlay">
-      <div
-        :class="`overlay-list scrollbar-body ${filteredOptions.length <= 5 ? 'not-scrollable' : ''}`"
-      >
+      <div :class="`overlay-list`">
         <div
           v-for="option in filteredOptions"
-          :key="filteredOptions?.indexOf(option)"
+          :key="(option as any).id"
           class="overlay-list-option"
           @click="onOptionSelected(option)"
         >
@@ -335,6 +378,7 @@ body {
           }
         }
         &.collapsed {
+          height: 0 !important;
           & .overlay-list {
             padding-top: 12px;
             display: flex;

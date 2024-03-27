@@ -23,7 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 44px;
-    padding: 0 globals.getSpacing(25);
+    padding: 0 globals.getSpacing(25) globals.getSpacing(25) globals.getSpacing(25);
     transition: globals.$default-transition;
     .content {
       display: flex;
@@ -33,7 +33,13 @@ body {
     @media (max-width: 1023px) {
       & {
         gap: 24px;
-        padding: 0 globals.getSpacing(5);
+        padding: 0 globals.getSpacing(5) globals.getSpacing(25) globals.getSpacing(5);
+        transition: globals.$default-transition;
+      }
+    }
+    @media (max-width: 767px) {
+      & {
+        padding: 0 globals.getSpacing(5) globals.getSpacing(20) globals.getSpacing(5);
         transition: globals.$default-transition;
       }
     }

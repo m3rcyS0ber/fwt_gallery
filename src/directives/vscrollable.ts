@@ -1,66 +1,55 @@
-const vScrollable = {
+const vscrollable = {
   updated: (el: any, binding: any) => {
     if (binding.value) {
       const currentElem = el as HTMLElement;
 
       currentElem.addEventListener("animationend", () => {
-        const trackElem = document.querySelector(
+        const trackElem = currentElem.querySelector(
           ".scrollbar-track",
         ) as HTMLElement;
 
-        const thumbElem = document.querySelector(
+        const thumbElem = currentElem.querySelector(
           ".scrollbar-thumb",
         ) as HTMLElement;
 
-        const scrollbarElem = document.querySelector(
+        const scrollbarElem = currentElem.querySelector(
           ".scrollbar",
         ) as HTMLElement;
 
-        const content = currentElem.querySelector(
+        const bodyElem = currentElem.querySelector(
           ".scrollbar-body",
         ) as HTMLElement;
-
-        if (trackElem && thumbElem && scrollbarElem && content) {
-          if (content.childElementCount <= 5) {
-            currentElem.style.height = `${36 * content.childElementCount}px`;
-            scrollbarElem?.classList.add("hidden");
-          } else {
-            currentElem.style.height = "190px";
-            scrollbarElem?.classList.remove("hidden");
-          }
-
-          const scrollRatio = content
-            ? content.clientHeight / content.scrollHeight
-            : 0;
-
-          let pos = { top: 0, y: 0 };
-
-          if (thumbElem) {
-            (thumbElem as HTMLElement).style.height = `${scrollRatio * 100}%`;
-          }
-
-          const config = { childList: true };
-
-          const callback = () => {
+        if (trackElem && thumbElem && scrollbarElem && bodyElem) {
+          let scrollRatio = bodyElem.clientHeight / bodyElem.scrollHeight;
+          thumbElem.style.height = `${scrollRatio * 100}%`;
+          let pos = { top: bodyElem.scrollTop, y: 0 };
+          const checkContentHeight = () => {
             if (
-              content &&
-              content.childElementCount &&
-              content.childElementCount <= 5
+              bodyElem &&
+              bodyElem.childElementCount &&
+              bodyElem.childElementCount <= 5
             ) {
               currentElem.style.height = "fit-content";
               scrollbarElem?.classList.add("hidden");
+              scrollRatio = bodyElem.clientHeight / bodyElem.scrollHeight;
+              (thumbElem as HTMLElement).style.height = `${scrollRatio * 100}%`;
             } else {
               currentElem.style.height = "190px";
               scrollbarElem?.classList.remove("hidden");
+              scrollRatio = bodyElem.clientHeight / bodyElem.scrollHeight;
+              (thumbElem as HTMLElement).style.height = `${scrollRatio * 100}%`;
             }
           };
 
-          const observer = new MutationObserver(callback);
-          observer.observe(content, config);
+          checkContentHeight();
+
+          const observer = new MutationObserver(checkContentHeight);
+          const config = { childList: true };
+          observer.observe(bodyElem, config);
 
           const mouseMoveHandler = (e: any) => {
             const dy = e.clientY - pos.y;
-            content.scrollTop = pos.top + dy / scrollRatio;
+            bodyElem.scrollTop = pos.top + dy / scrollRatio;
           };
 
           const mouseUpHandler = () => {
@@ -73,7 +62,7 @@ const vScrollable = {
 
           const mouseDownThumbHandler = (e: any) => {
             pos = {
-              top: content.scrollTop,
+              top: bodyElem.scrollTop,
               y: e.clientY,
             };
 
@@ -86,24 +75,28 @@ const vScrollable = {
 
           const scrollContentHandler = () => {
             window.requestAnimationFrame(() => {
-              thumbElem.style.top = `${(content.scrollTop * 100) / content.scrollHeight}%`;
+              thumbElem.style.top = `${(bodyElem.scrollTop * 100) / bodyElem.scrollHeight}%`;
             });
           };
 
           const trackClickHandler = (e: any) => {
             const bound = trackElem.getBoundingClientRect();
             const percentage = (e.clientY - bound.top) / bound.height;
-            content.scrollTop =
-              percentage * (content.scrollHeight - content.clientHeight);
+            pos.top =
+              percentage * (bodyElem.scrollHeight - bodyElem.clientHeight);
+            bodyElem.scrollTop = pos.top;
           };
           const mouseWheelHandler = (e: any) => {
-            const delta = e.deltaY;
-            content.scrollTop += delta / 3;
+            pos.top = Math.sign(e.deltaY) === 1 ? pos.top + 20 : pos.top - 20;
+            bodyElem.scrollTop = pos.top;
           };
 
-          content.addEventListener("scroll", scrollContentHandler);
-          content.addEventListener("wheel", mouseWheelHandler, {
+          bodyElem.addEventListener("scroll", scrollContentHandler);
+          bodyElem.addEventListener("wheel", mouseWheelHandler, {
             passive: true,
+          });
+          bodyElem.addEventListener("touchstart", (e) => {
+            console.log("drag");
           });
           thumbElem.addEventListener("mousedown", mouseDownThumbHandler);
           trackElem.addEventListener("click", trackClickHandler);
@@ -113,18 +106,21 @@ const vScrollable = {
   },
   mounted: (el: any) => {
     const currentElem = el as HTMLElement;
+    if (currentElem.firstElementChild) {
+      if (!currentElem.firstElementChild.classList.contains("scrollbar-body"))
+        currentElem.firstElementChild.classList.add("scrollbar-body");
+      const trackElem = document.createElement("div");
+      trackElem.classList.add("scrollbar-track");
 
-    const trackElem = document.createElement("div");
-    trackElem.classList.add("scrollbar-track");
+      const thumbElem = document.createElement("div");
+      thumbElem.classList.add("scrollbar-thumb");
 
-    const thumbElem = document.createElement("div");
-    thumbElem.classList.add("scrollbar-thumb");
-
-    const scrollbarElem = document.createElement("div");
-    scrollbarElem.classList.add("scrollbar");
-    scrollbarElem.append(trackElem, thumbElem);
-    currentElem.append(scrollbarElem);
+      const scrollbarElem = document.createElement("div");
+      scrollbarElem.classList.add("scrollbar");
+      scrollbarElem.append(trackElem, thumbElem);
+      currentElem.append(scrollbarElem);
+    }
   },
 };
 
-export default vScrollable;
+export default vscrollable;
