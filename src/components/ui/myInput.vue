@@ -210,6 +210,14 @@ const onTextInput = (e: Event) => {
     props.inputCb();
   }
 };
+const onSearchIconClick = () => {
+  const searchInput = document.querySelector(
+    ".anyInput-search input",
+  ) as HTMLInputElement;
+  if (searchInput) {
+    modelStore.setSearchValue(searchInput.value);
+  }
+};
 const onOptionSelected = (option: any) => {
   setModelValue(option.name || option.location);
   props.selectCb(option);
@@ -218,27 +226,15 @@ const onOptionSelected = (option: any) => {
 onUnmounted(() => {
   props.unmountCb();
 });
-// onBeforeUnmount(()=>{
-//   const optionElems = document.querySelectorAll(".overlay-list-option");
-//   if (optionElems) {
-//     optionElems.forEach((elem: any) => {
-//       (elem as HTMLElement).removeEventListener("click", onOptionSelected);
-//     });
-//   }
-// })
-// onMounted(() => {
-//   const optionElems = document.querySelectorAll(".overlay-list-option");
-//   if (optionElems) {
-//     optionElems.forEach((elem: any) => {
-//       (elem as HTMLElement).addEventListener("click", onOptionSelected);
-//     });
-//   }
-// });
 </script>
 
 <template>
   <div v-if="props.type === 'search'" class="anyInput anyInput-search">
-    <ThemeableIcon name="search" />
+    <ThemeableIcon
+      name="search"
+      :with-hover="true"
+      :click-cb="onSearchIconClick"
+    />
     <input
       type="text"
       name="input-search"
