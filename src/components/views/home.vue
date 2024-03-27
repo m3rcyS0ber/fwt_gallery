@@ -14,7 +14,7 @@ mainStore.refreshAll();
 const modelStore = useModelStore();
 
 modelStore.$subscribe((mutation: any, state: any) => {
-  if (mutation.events.key === "search") {
+  if (mutation && mutation.event && mutation.events.key === "search") {
     const tempOptions = mainStore.filterOptions;
     tempOptions.query = state.search;
     mainStore.setFilterOptions(tempOptions);
