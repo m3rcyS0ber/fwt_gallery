@@ -1,7 +1,6 @@
 const onClickedOutside = (el: any, binding?: any) => {
   return (e: any) => {
     if (!el.contains(e.target) && binding.isActive && binding.callback) {
-      console.log(e.target);
       binding.callback();
     }
   };
